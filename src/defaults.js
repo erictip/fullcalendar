@@ -16,6 +16,10 @@ var defaults = {
 
 	//viewMoreLink: false,
 
+	viewMoreContent: function(hiddenEventCount) {
+		return '<a href="#view-more"><span>+' + hiddenEventCount + ' more...</span></a>';
+	},
+
 	// editing
 	//editable: false,
 	//disableDragging: false,
