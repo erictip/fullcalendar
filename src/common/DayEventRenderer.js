@@ -464,8 +464,8 @@ function DayEventRenderer() {
 					if (!td.data('viewMoreLinkAdded')) {
 						var dayContentDiv = td.children().first();
 
-						var viewMoreDiv = $('<div class="events-view-more"><a href="#view-more">' +
-							'<span>View More</span></a></div>');
+						var viewMoreDiv = $('<div class="events-view-more" data-date="' +
+							tdDateStr +'"></div>');
 
 						viewMoreDiv.appendTo(dayContentDiv);
 						td.data('viewMoreLinkAdded', true);
@@ -486,6 +486,18 @@ function DayEventRenderer() {
 							return false;
 						});
 					}
+
+					// update the 'view more' content
+					var viewMoreHtml;
+					if ($.isFunction(opt('viewMoreContent'))) {
+						var hiddenEventCount = (td.data('hiddenEventCount') || 0) + 1;
+						td.data('hiddenEventCount', hiddenEventCount);
+						viewMoreHtml = opt('viewMoreContent')(hiddenEventCount);
+					} else {
+						viewMoreHtml = opt('viewMoreContent');
+					}
+					var viewMoreDiv = $('.events-view-more[data-date="' + tdDateStr + '"]');
+					viewMoreDiv.html(viewMoreHtml);
 
 					if (segment.leftCol == segment.rightCol) {
 						// we haven't found any way to show this segment at all, just remove it
