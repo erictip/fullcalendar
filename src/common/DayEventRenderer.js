@@ -400,6 +400,9 @@ function DayEventRenderer() {
 		var weekRows = tbody.children();
 		var dayMs    = (1000*60*60*24); // 24 hrs * 60 mins * 60s * 1000 ms
 
+		// clear these values to make sure hiddenEventCount is accurate for the "view more" link
+		$('td[data-date]').each(function(i, td) { $(td).data('hiddenEventCount', 0); });
+
 		for (var rowI=0; rowI<rowCnt; rowI++) {
 			var segmentRow = segmentRows[rowI];
 
@@ -490,7 +493,7 @@ function DayEventRenderer() {
 					// update the 'view more' content
 					var viewMoreHtml;
 					if ($.isFunction(opt('viewMoreContent'))) {
-						var hiddenEventCount = (td.data('hiddenEventCount') || 0) + 1;
+						var hiddenEventCount = td.data('hiddenEventCount') + 1;
 						td.data('hiddenEventCount', hiddenEventCount);
 						viewMoreHtml = opt('viewMoreContent')(hiddenEventCount);
 					} else {
