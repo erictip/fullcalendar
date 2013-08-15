@@ -390,18 +390,23 @@ function DayEventRenderer() {
 		var rowContentHeights = []; // content height for each row
 		var segmentRows = buildSegmentRows(segments); // an array of segment arrays, one for each row
 
-		var dayPadding = 6, // ~.5em, default css padding provided by fullcalendar.css
-			rowHeight = $(".fc-week").height(),
-			dayNumberHeight = $(".fc-day-number").height(),
-			viewMoreLinkHeight = 18; // TODO - not hard-code?
-		var dayContentHeight = rowHeight - dayNumberHeight - (dayPadding*2) - viewMoreLinkHeight;
+		var checkHeight = (opt('viewMoreLink') && t.calendar.getView().name == "month");
 
-		var tbody    = $(getDaySegmentContainer()).parent().children().eq(1).children().eq(1);
-		var weekRows = tbody.children();
-		var dayMs    = (1000*60*60*24); // 24 hrs * 60 mins * 60s * 1000 ms
+		if (checkHeight) {
+			var dayPadding = 6, // ~.5em, default css padding provided by fullcalendar.css
+				rowHeight = $(".fc-week").height(),
+				dayNumberHeight = $(".fc-day-number").height(),
+				viewMoreHeight = 18; // TODO - not hard-code?
+			var dayContentHeight = rowHeight - dayNumberHeight - (dayPadding*2) - viewMoreHeight;
 
-		// clear these values to make sure hiddenEventCount is accurate for the "view more" link
-		$('td[data-date]').each(function(i, td) { $(td).data('hiddenEventCount', 0); });
+			var tbody    = $(getDaySegmentContainer()).parent().children().eq(1).children().eq(1);
+			var weekRows = tbody.children();
+
+			var dayMs    = (1000*60*60*24); // 24 hrs * 60 mins * 60s * 1000 ms
+
+			// clear these values to make sure hiddenEventCount is accurate for the "view more" link
+			$('td[data-date]').each(function(i, td) { $(td).data('hiddenEventCount', 0); });
+		}
 
 		for (var rowI=0; rowI<rowCnt; rowI++) {
 			var segmentRow = segmentRows[rowI];
@@ -427,8 +432,7 @@ function DayEventRenderer() {
 				);
 
 				var segmentBottom = segment.top + segment.element.height(),
-					tooTall = false,
-					checkHeight = (opt('viewMoreLink') && t.calendar.getView().name == "month");
+					tooTall = false;
 
 				if (checkHeight && (segmentBottom > dayContentHeight)) {
 					tooTall = true;
@@ -541,11 +545,15 @@ function DayEventRenderer() {
 				if (!tooTall) {
 					// adjust the columns to account for the segment's height
 					for (var colI=segment.leftCol; colI<=segment.rightCol; colI++) {
-						// we can't use segment.outerHeight because the "viewMore" functionality
-						// could cause a segment to be taller than expected (since we're squashing
-						// the width in some cases)
-						var vertSpacing = 3;
-						colHeights[colI] = segment.top + segment.element.height() + vertSpacing;
+						if (checkHeight) {
+							// we can't use segment.outerHeight because the "viewMore"
+							// functionality could cause a segment to be taller than expected
+							// (since we're squashing the width in some cases)
+							// 3 is the amount of vertical spacing we want between events
+							colHeights[colI] = segment.top + segment.element.height() + 3;
+						} else {
+							colHeights[colI] = segment.top + segment.outerHeight;
+						}
 					}
 				}
 			}
