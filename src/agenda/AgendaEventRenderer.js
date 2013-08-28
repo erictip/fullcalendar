@@ -218,7 +218,7 @@ function AgendaEventRenderer() {
 			availWidth = colContentRight(colI) - leftmost;
 			availWidth = Math.min(availWidth-6, availWidth*.95); // TODO: move this to CSS
 
-			outerWidth = availWidth / (forward + 1);
+			outerWidth = availWidth / (levelI + forward + 1);
 			left = leftmost +                                  // leftmost possible
 				(availWidth / (levelI + forward + 1) * levelI) // indentation
 				* dis + (rtl ? availWidth - outerWidth : 0);   // rtl
