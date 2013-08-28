@@ -1,14 +1,14 @@
 
 function AgendaEventRenderer() {
 	var t = this;
-	
-	
+
+
 	// exports
 	t.renderEvents = renderEvents;
 	t.clearEvents = clearEvents;
 	t.slotSegHtml = slotSegHtml;
-	
-	
+
+
 	// imports
 	DayEventRenderer.call(t);
 	var opt = t.opt;
@@ -51,11 +51,11 @@ function AgendaEventRenderer() {
 	// overrides
 	t.draggableDayEvent = draggableDayEvent;
 
-	
-	
+
+
 	/* Rendering
 	----------------------------------------------------------------------------*/
-	
+
 
 	function renderEvents(events, modifiedEventId) {
 		reportEvents(events);
@@ -79,15 +79,15 @@ function AgendaEventRenderer() {
 
 		trigger('eventAfterAllRender');
 	}
-	
-	
+
+
 	function clearEvents() {
 		reportEventClear();
 		getDaySegmentContainer().empty();
 		getSlotSegmentContainer().empty();
 	}
 
-	
+
 	function compileSlotSegs(events) {
 		var colCnt = getColCnt(),
 			minMinute = getMinMinute(),
@@ -173,14 +173,14 @@ function AgendaEventRenderer() {
 			return addMinutes(cloneDate(event.start), opt('defaultEventMinutes'));
 		}
 	}
-	
-	
+
+
 	// renders events in the 'time slots' at the bottom
 	// TODO: when we refactor this, when user returns `false` eventRender, don't have empty space
 	// TODO: refactor will include using pixels to detect collisions instead of dates (handy for seg cmp)
-	
+
 	function renderSlotSegs(segs, modifiedEventId) {
-	
+
 		var i, segCnt=segs.length, seg,
 			event,
 			classes,
@@ -198,13 +198,13 @@ function AgendaEventRenderer() {
 			height,
 			slotSegmentContainer = getSlotSegmentContainer(),
 			rtl, dis;
-			
+
 		if (rtl = opt('isRTL')) {
 			dis = -1;
 		}else{
 			dis = 1;
 		}
-			
+
 		// calculate position/dimensions, create html
 		for (i=0; i<segCnt; i++) {
 			seg = segs[i];
@@ -217,18 +217,8 @@ function AgendaEventRenderer() {
 			leftmost = colContentLeft(colI);
 			availWidth = colContentRight(colI) - leftmost;
 			availWidth = Math.min(availWidth-6, availWidth*.95); // TODO: move this to CSS
-			if (levelI) {
-				// indented and thin
-				outerWidth = availWidth / (levelI + forward + 1);
-			}else{
-				if (forward) {
-					// moderately wide, aligned left still
-					outerWidth = ((availWidth / (forward + 1)) - (12/2)) * 2; // 12 is the predicted width of resizer =
-				}else{
-					// can be entire width, aligned left
-					outerWidth = availWidth;
-				}
-			}
+
+			outerWidth = availWidth / (forward + 1);
 			left = leftmost +                                  // leftmost possible
 				(availWidth / (levelI + forward + 1) * levelI) // indentation
 				* dis + (rtl ? availWidth - outerWidth : 0);   // rtl
@@ -240,7 +230,7 @@ function AgendaEventRenderer() {
 		}
 		slotSegmentContainer[0].innerHTML = html; // faster than html()
 		eventElements = slotSegmentContainer.children();
-		
+
 		// retrieve elements, run through eventRender callback, bind event handlers
 		for (i=0; i<segCnt; i++) {
 			seg = segs[i];
@@ -269,9 +259,9 @@ function AgendaEventRenderer() {
 				reportEventElement(event, eventElement);
 			}
 		}
-		
+
 		lazySegBind(slotSegmentContainer, segs, bindSlotSeg);
-		
+
 		// record event sides and title positions
 		for (i=0; i<segCnt; i++) {
 			seg = segs[i];
@@ -284,7 +274,7 @@ function AgendaEventRenderer() {
 				}
 			}
 		}
-		
+
 		// set all positions/dimensions at once
 		for (i=0; i<segCnt; i++) {
 			seg = segs[i];
@@ -303,10 +293,10 @@ function AgendaEventRenderer() {
 				trigger('eventAfterRender', event, event, eventElement);
 			}
 		}
-					
+
 	}
-	
-	
+
+
 	function slotSegHtml(event, seg) {
 		var html = "<";
 		var url = event.url;
@@ -351,8 +341,8 @@ function AgendaEventRenderer() {
 			"</" + (url ? "a" : "div") + ">";
 		return html;
 	}
-	
-	
+
+
 	function bindSlotSeg(event, eventElement, seg) {
 		var timeElement = eventElement.find('div.fc-event-time');
 		if (isEventDraggable(event)) {
@@ -363,17 +353,17 @@ function AgendaEventRenderer() {
 		}
 		eventElementHandlers(event, eventElement);
 	}
-	
-	
-	
+
+
+
 	/* Dragging
 	-----------------------------------------------------------------------------------*/
-	
-	
+
+
 	// when event starts out FULL-DAY
 	// overrides DayEventRenderer's version because it needs to account for dragging elements
 	// to and from the slot area.
-	
+
 	function draggableDayEvent(event, eventElement, seg) {
 		var isStart = seg.isStart;
 		var origWidth;
@@ -467,10 +457,10 @@ function AgendaEventRenderer() {
 			}
 		}
 	}
-	
-	
+
+
 	// when event starts out IN TIMESLOTS
-	
+
 	function draggableSlotEvent(event, eventElement, timeElement) {
 		var origPosition;
 		var allDay = false;
@@ -563,13 +553,13 @@ function AgendaEventRenderer() {
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	/* Resizing
 	--------------------------------------------------------------------------------------*/
-	
-	
+
+
 	function resizableSlotEvent(event, eventElement, timeElement) {
 		var snapDelta, prevSnapDelta;
 		var snapHeight = getSnapHeight();
@@ -612,7 +602,7 @@ function AgendaEventRenderer() {
 			}
 		});
 	}
-	
+
 
 }
 
