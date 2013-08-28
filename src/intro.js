@@ -4,7 +4,7 @@
  * Docs & License: <%= meta.homepage %>
  * (c) <%= meta.copyright %>
  *
- * !!! Fork Version: v1.6.2-viewmore
+ * !!! Fork Version: v1.6.2-fix-agenda-event-widths
  * !!! Forked codebase is here: https://github.com/erictip/fullcalendar
  */
 
