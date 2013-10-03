@@ -1,8 +1,8 @@
 
 function Header(calendar, options) {
 	var t = this;
-	
-	
+
+
 	// exports
 	t.render = render;
 	t.destroy = destroy;
@@ -11,12 +11,12 @@ function Header(calendar, options) {
 	t.deactivateButton = deactivateButton;
 	t.disableButton = disableButton;
 	t.enableButton = enableButton;
-	
-	
+
+
 	// locals
 	var element = $([]);
 	var tm;
-	
+
 
 
 	function render() {
@@ -33,13 +33,13 @@ function Header(calendar, options) {
 			return element;
 		}
 	}
-	
-	
+
+
 	function destroy() {
 		element.remove();
 	}
-	
-	
+
+
 	function renderSection(position) {
 		var e = $("<td class='fc-header-" + position + "'/>");
 		var buttonStr = options.header[position];
@@ -56,6 +56,8 @@ function Header(calendar, options) {
 							prevButton.addClass(tm + '-corner-right');
 						}
 						prevButton = null;
+					} else if (typeof options[buttonName] == 'function') {
+						e.append(options[buttonName]());
 					}else{
 						var buttonClick;
 						if (calendar[buttonName]) {
@@ -123,32 +125,32 @@ function Header(calendar, options) {
 		}
 		return e;
 	}
-	
-	
+
+
 	function updateTitle(html) {
 		element.find('h2')
 			.html(html);
 	}
-	
-	
+
+
 	function activateButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
 			.addClass(tm + '-state-active');
 	}
-	
-	
+
+
 	function deactivateButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
 			.removeClass(tm + '-state-active');
 	}
-	
-	
+
+
 	function disableButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
 			.addClass(tm + '-state-disabled');
 	}
-	
-	
+
+
 	function enableButton(buttonName) {
 		element.find('span.fc-button-' + buttonName)
 			.removeClass(tm + '-state-disabled');
