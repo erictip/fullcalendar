@@ -4,7 +4,7 @@
  * Docs & License: <%= meta.homepage %>
  * (c) <%= meta.copyright %>
  *
- * !!! Fork Version: v1.6.2-fix-agenda-event-widths
+ * !!! Fork Version: v1.6.2-custom-header-function
  * !!! Forked codebase is here: https://github.com/erictip/fullcalendar
  */
 
